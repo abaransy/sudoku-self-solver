@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           return;
         }
 
-        audio.volume -= 0.1;
+        audio.volume -= Math.min(0.1, abs(0 - audio.volume));
         await sleep(200);
         await fadeOut();
       }
