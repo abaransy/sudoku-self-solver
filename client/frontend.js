@@ -12,6 +12,7 @@ const AUDIO_DELAY = 750;
 let br = false;
 let grid = null;
 let currentPuzzle = null;
+let originalPuzzle = null;
 
 const createAndAppendNumberElement = (number, i, j) => {
   const existingElement = grid.querySelector(`#row-col-${i}-${j}`);
@@ -175,6 +176,21 @@ const newPuzzle = async () => {
   return puzzleMatrix;
 }
 
+
+const deepCopy = (arr) => {
+  let copy = [];
+
+  arr.forEach(elem => {
+    if (Array.isArray(elem)) {
+      copy.push(deepCopy(elem))
+    } else {
+      copy.push(elem);
+    }
+  });
+
+  return copy;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   grid = document.querySelector("#sodoku-board");
 
@@ -202,7 +218,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const [startButton, stopButton, newPuzzleButton] = controlButtons;
 
-  currentPuzzle = await newPuzzle();
+  originalPuzzle = await newPuzzle();
+  currentPuzzle = deepCopy(originalPuzzle);
 
   let recursing = false;
 
@@ -210,15 +227,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const startCallback = async () => {
     if (recursing === false) {
+      currentPuzzle = deepCopy(originalPuzzle);
+      populateGrid(currentPuzzle);
       recursing = true;
       br = false;
-      audio.currentTime = 0;
+      audio.currentTime = 0.5;
       audio.play();
-      setTimeout(async () => {
-        await recurse(0, 0);
-        recursing = false;
-        audio.pause();
-      }, AUDIO_DELAY);
+      await recurse(0, 0);
+      recursing = false;
     }
   }
 
@@ -238,7 +254,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       stopCallback();
 
       fetchingPuzzle = true;
-      currentPuzzle = await newPuzzle();
+      originalPuzzle = await newPuzzle();
+      currentPuzzle = deepCopy(originalPuzzle);
       fetchingPuzzle = false;
     }
   });
@@ -247,4 +264,5 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   windowResizeCallback();
 })
+
 
