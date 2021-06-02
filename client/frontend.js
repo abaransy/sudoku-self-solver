@@ -234,17 +234,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       audio.play();
       await recurse(0, 0);
       recursing = false;
-      audio.pause();
 
       const fadeOut = async () => {
         if (audio.volume === 0) {
           return;
         }
 
-        audio.volume -= Math.min(0.05, Math.abs(0 - audio.volume));
+        const volumeReduction = Math.min(0.05, Math.abs(0 - audio.volume));
+
+        audio.volume -= volumeReduction;
         await sleep(250);
         await fadeOut();
       }
+
+      await fadeOut();
+
+      audio.pause();
     }
   }
 
