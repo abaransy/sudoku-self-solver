@@ -84,18 +84,24 @@ const convertStringToMatrix = (puzzleArray) => {
 const recurse = async (row, col) => {
   for (let i = row; i < NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; i++, col = 0) {
     if (br) {
-      break;
+      br = false;
+
+      return;
     }
     for (let j = col; j < NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; j++) {
       if (currentPuzzle[i][j] != '.') {
         continue;
       }
       if (br) {
-        break;
+        br = false;
+
+        return;
       }
       for (let num = 1; num <= NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; num++) {
         if (br) {
-          break;
+          br = false;
+
+          return;
         }
         if (isValid(i, j, num)) {
           currentPuzzle[i][j] = num.toString();
@@ -224,17 +230,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const startCallback = async () => {
 
-    if (recursing === false) {
+    if (recursing === false && br === false) {
+      recursing = true;
       currentPuzzle = deepCopy(originalPuzzle);
       populateGrid(currentPuzzle);
-      recursing = true;
-      br = false;
       audio.volume = 1;
       audio.currentTime = 0.5;
       audio.play();
       await recurse(0, 0);
-      recursing = false;
-
       const fadeOut = async () => {
         if (audio.volume === 0) {
           return;
@@ -246,16 +249,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         await sleep(250);
         await fadeOut();
       }
-
       await fadeOut();
-
       audio.pause();
+      recursing = false;
     }
   }
 
   const stopCallback = async () => {
-    recursing = false;
     br = true;
+    recursing = false;
     audio.pause();
   }
 
