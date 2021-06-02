@@ -95,6 +95,10 @@ body {
   transition-duration: 0.25s;
 }
 
+audio {
+  display: none;
+}
+
 @media(max-width: 1000px) {
   #sodoku-board {
     height: 40%;

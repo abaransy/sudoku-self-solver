@@ -208,8 +208,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const audio = document.querySelector("audio");
 
-  audio.style.display = "none;";
-
   const startCallback = async () => {
     if (recursing === false) {
       recursing = true;
