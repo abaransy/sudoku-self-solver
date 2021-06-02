@@ -10,7 +10,7 @@ const THIRD_ROW_OR_COLUMN_OFFSET_END = 4;
 const SLEEP_TIME_GRID = 250;
 const SLEEP_TIME_VOLUME = 150;
 const AUDIO_DELAY = 0.5;
-const VOLUME_REDUCTION_STEP = 0.2; 
+const VOLUME_REDUCTION_STEP = 0.2;
 
 let br = false;
 let working = false;
@@ -88,6 +88,18 @@ const convertStringToMatrix = (puzzleArray) => {
   return puzzleMatrix;
 }
 
+const handleStackDetph = async (stackDepth) => {
+  if (stackDepth === 0) {
+    await endOfRecursionCallback();
+  }
+}
+
+const addNumberToGridAndSleep = async (num, i, j) => {
+  createAndAppendNumberElement(num, i, j);
+
+  await sleep(SLEEP_TIME_GRID);
+}
+
 const recurse = async (row, col, stackDepth = 0) => {
   for (let i = row; i < NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; i++, col = 0) {
     if (br) {
@@ -110,31 +122,25 @@ const recurse = async (row, col, stackDepth = 0) => {
           currentPuzzle[i][j] = num.toString();
 
           if (!br) {
-            createAndAppendNumberElement(num, i, j);
-
-            await sleep(SLEEP_TIME_GRID);
+            await addNumberToGridAndSleep(num, i, j);
           }
 
           if (await recurse(i, j + 1, stackDepth + 1)) {
-            if (stackDepth === 0) {
-              await endOfRecursionCallback();
-            }
+            await handleStackDetph(stackDepth);
+
             return true;
           } else {
             currentPuzzle[i][j] = '.';
 
             if (!br) {
-              createAndAppendNumberElement(0, i, j);
-
-              await sleep(SLEEP_TIME_GRID);
+              await addNumberToGridAndSleep(0, i, j);
             }
           }
         }
       }
 
-      if (stackDepth === 0) {
-        await endOfRecursionCallback();
-      }
+      await handleStackDetph(stackDepth);
+
       return false;
     }
   }
