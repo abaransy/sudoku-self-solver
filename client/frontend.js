@@ -213,34 +213,31 @@ const startCallback = async () => {
 }
 
 const stopCallback = async () => {
-  if (stoppingRecursion === false) {
-    stoppingRecursion = true;
+  br = true;
+}
 
-    const audio = document.querySelector("audio");
+const cleanup = async () => {
+  const audio = document.querySelector("audio");
 
-    br = true;
 
-    const fadeOut = async () => {
-      if (audio.volume <= 0) {
-        return;
-      }
-
-      const volumeReduction = Math.min(VOLUME_REDUCTION_STEP, Math.abs(0 - audio.volume));
-
-      audio.volume -= volumeReduction;
-
-      await sleep(SLEEP_TIME_VOLUME);
-      await fadeOut();
+  const fadeOut = async () => {
+    if (audio.volume <= 0) {
+      return;
     }
 
-    if (!mobileCheck()) {
-      await fadeOut();
-    }
+    const volumeReduction = Math.min(VOLUME_REDUCTION_STEP, Math.abs(0 - audio.volume));
 
-    audio.pause();
+    audio.volume -= volumeReduction;
 
-    stoppingRecursion = false;
+    await sleep(SLEEP_TIME_VOLUME);
+    await fadeOut();
   }
+
+  if (!mobileCheck()) {
+    await fadeOut();
+  }
+
+  audio.pause();
 }
 
 const newPuzzleButtonCallback = async () => {
@@ -286,7 +283,7 @@ const endOfRecursionCallback = async () => {
   if (endingRecursion === false) {
     endingRecursion = true;
 
-    await stopCallback();
+    await cleanup();
 
     if (createNewPuzzle === true) {
       await createAndAssignNewPuzzle();
@@ -294,8 +291,8 @@ const endOfRecursionCallback = async () => {
       createNewPuzzle = false;
     }
 
-    working = false;
     endingRecursion = false;
+    working = false;
   }
 }
 
