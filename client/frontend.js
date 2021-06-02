@@ -234,14 +234,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       recursing = false;
       audio.pause();
 
-      const fadeOut = () => {
+      const fadeOut = async () => {
         if (audio.volume === 0) {
           return;
         }
 
         audio.volume -= 0.1;
         await sleep(200);
-        fadeOut();
+        await fadeOut();
       }
     }
   }
