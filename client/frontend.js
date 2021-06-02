@@ -217,6 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       setTimeout(async () => {
         await recurse(0, 0);
         recursing = false;
+        audio.pause();
       }, AUDIO_DELAY);
     }
   }
