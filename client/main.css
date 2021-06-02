@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Mate+SC&display=swap');
+
+body {
+  background-image: url('./wood-background.jpg');
+  height: 100vh;
+  font-family: 'Mate SC', serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+  width: 100%;
+}
+
+#sodoku-board {
+  background-image: url("textured-paper.jpg");
+  border: 0.5rem solid #B0E0E6;
+  border-radius: 0.25rem;
+  box-shadow: 0.1rem 0.1rem 0.3rem 0.2rem #c2d3dd;
+  display: grid;
+  grid-template-columns: 11% 11% 11% 0.5% 11% 11% 11% 0.5% 11% 11% 11%;
+  grid-template-rows: 11% 11% 11% 0.5% 11% 11% 11% 0.5% 11% 11% 11%;;
+}
+
+#left-border {
+  grid-column-end: 4;
+  grid-column-start: 5;
+  grid-row-end: 12;
+  grid-row-start: 1;
+}
+
+#right-border {
+  grid-column-end: 9;
+  grid-column-start: 8;
+  grid-row-end: 12;
+  grid-row-start: 1;
+}
+
+#top-border {
+  grid-column-end: 12;
+  grid-column-start: 1;
+  grid-row-end: 5;
+  grid-row-start: 4
+}
+
+#bottom-border {
+  grid-column-end: 12;
+  grid-column-start: 1;
+  grid-row-end: 9;
+  grid-row-start: 8;
+}
+
+.border {
+  background-color: #B0E0E6;
+}
+
+.number-element-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.01rem solid #B0E0E6;
+}
+
+.number-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+  width: 70%;
+}
+
+.number {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 25%;
+  height: 5%;
+}
+
+.control-button {
+  font-weight: bold;
+  border-radius: 0.25rem;
+  font-family: 'Mate SC', serif;
+  width: 30%;
+  height: 100%;
+  transition-duration: 0.25s;
+}
+
+@media(max-width: 1000px) {
+  #sodoku-board {
+    height: 40%;
+  }
+
+  .buttons-container {
+    flex-direction: column;
+    align-items: center;
+    height: 15%;
+    width: 25%;
+    justify-content: space-between;
+  }
+
+  .control-button {
+    height: 30%;
+    width: 100%;
+  }
+}
+
