@@ -93,10 +93,14 @@ const recurse = async (row, col) => {
         continue;
       }
       if (br) {
+        br = false;
+
         return;
       }
       for (let num = 1; num <= NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; num++) {
         if (br) {
+          br = false;
+
           return;
         }
         if (isValid(i, j, num)) {
