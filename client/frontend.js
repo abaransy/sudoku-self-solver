@@ -86,22 +86,18 @@ const recurse = async (row, col) => {
     if (br) {
       br = false;
 
-      return;
+      break;
     }
     for (let j = col; j < NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; j++) {
       if (currentPuzzle[i][j] != '.') {
         continue;
       }
       if (br) {
-        br = false;
-
-        return;
+        break;
       }
       for (let num = 1; num <= NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; num++) {
         if (br) {
-          br = false;
-
-          return;
+          break;
         }
         if (isValid(i, j, num)) {
           currentPuzzle[i][j] = num.toString();
