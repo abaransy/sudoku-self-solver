@@ -109,6 +109,7 @@ const recurse = async (row, col) => {
           }
 
           currentPuzzle[i][j] = '.';
+          createAndAppendNumberElement(0, i, j);
         }
       }
 
@@ -233,9 +234,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       recursing = false;
       audio.pause();
 
-      while (audio.volume > 0) {
+      const fadeOut = () => {
+        if (audio.volume === 0) {
+          return;
+        }
+
         audio.volume -= 0.1;
         await sleep(200);
+        fadeOut();
       }
     }
   }
