@@ -16,6 +16,8 @@ let grid = null;
 let currentPuzzle = null;
 let originalPuzzle = null;
 let createNewPuzzle = false;
+let endingRecursion = false;
+let stoppingRecursion = false;
 
 const createAndAppendNumberElement = (number, i, j) => {
   const existingElement = grid.querySelector(`#row-col-${i}-${j}`);
@@ -84,9 +86,7 @@ const convertStringToMatrix = (puzzleArray) => {
   return puzzleMatrix;
 }
 
-const recurse = async (row, col) => {
-  working = true;
-
+const recurse = async (row, col, stackDepth = 0) => {
   for (let i = row; i < NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; i++, col = 0) {
     if (br) {
       break;
@@ -113,7 +113,10 @@ const recurse = async (row, col) => {
             await sleep(SLEEP_TIME);
           }
 
-          if (await recurse(i, j + 1)) {
+          if (await recurse(i, j + 1, stackDepth + 1)) {
+            if (stackDepth === 0) {
+              await endOfRecursionCallback();
+            }
             return true;
           } else {
             currentPuzzle[i][j] = '.';
@@ -127,11 +130,13 @@ const recurse = async (row, col) => {
         }
       }
 
+      if (stackDepth === 0) {
+        await endOfRecursionCallback();
+      }
       return false;
     }
   }
 
-  console.log('here, end of recusion');
   await endOfRecursionCallback();
 
   return true;
@@ -180,6 +185,7 @@ const startCallback = async () => {
   const audio = document.querySelector("audio");
 
   if (working === false) {
+    working = true;
     br = false;
     currentPuzzle = deepCopy(originalPuzzle);
     populateGrid(currentPuzzle);
@@ -191,26 +197,32 @@ const startCallback = async () => {
 }
 
 const stopCallback = async () => {
-  const audio = document.querySelector("audio");
+  if (stoppingRecursion === false) {
+    stoppingRecursion = true;
 
-  br = true;
+    const audio = document.querySelector("audio");
 
-  const fadeOut = async () => {
-    if (audio.volume === 0) {
-      return;
+    br = true;
+
+    const fadeOut = async () => {
+      if (audio.volume <= 0) {
+        return;
+      }
+
+      const volumeReduction = Math.min(0.1, Math.abs(0 - audio.volume));
+
+      audio.volume -= volumeReduction;
+
+      await sleep(SLEEP_TIME);
+      await fadeOut();
     }
 
-    const volumeReduction = Math.min(0.1, Math.abs(0 - audio.volume));
-
-    audio.volume -= volumeReduction;
-
-    await sleep(SLEEP_TIME);
     await fadeOut();
+
+    audio.pause();
+
+    stoppingRecursion = false;
   }
-
-  await fadeOut();
-
-  audio.pause();
 }
 
 const newPuzzleButtonCallback = async () => {
@@ -253,15 +265,20 @@ const deepCopy = (arr) => {
 }
 
 const endOfRecursionCallback = async () => {
-  await stopCallback();
+  if (endingRecursion === false) {
+    endingRecursion = true;
 
-  if (createNewPuzzle === true) {
-    await createAndAssignNewPuzzle();
+    await stopCallback();
 
-    createNewPuzzle = false;
+    if (createNewPuzzle === true) {
+      await createAndAssignNewPuzzle();
+
+      createNewPuzzle = false;
+    }
+
+    working = false;
+    endingRecursion = false;
   }
-
-  working = false;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
