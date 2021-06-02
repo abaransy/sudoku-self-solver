@@ -235,6 +235,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       while (audio.volume > 0) {
         audio.volume -= 0.1;
+        await sleep(50);
       }
     }
   }
