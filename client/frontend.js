@@ -212,6 +212,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (recursing === false) {
       recursing = true;
       br = false;
+      audio.currentTime = 0;
       audio.play();
       setTimeout(async () => {
         await recurse(0, 0);
