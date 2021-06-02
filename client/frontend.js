@@ -241,8 +241,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           return;
         }
 
-        audio.volume -= Math.min(0.1, abs(0 - audio.volume));
-        await sleep(200);
+        audio.volume -= Math.min(0.05, Math.abs(0 - audio.volume));
+        await sleep(250);
         await fadeOut();
       }
     }
