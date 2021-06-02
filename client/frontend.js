@@ -220,16 +220,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const audio = document.querySelector("audio");
 
   const startCallback = async () => {
+
     if (recursing === false) {
       currentPuzzle = deepCopy(originalPuzzle);
       populateGrid(currentPuzzle);
       recursing = true;
       br = false;
+      audio.volume = 1;
       audio.currentTime = 0.5;
       audio.play();
       await recurse(0, 0);
       recursing = false;
       audio.pause();
+
+      while (audio.volume > 0) {
+        audio.volume -= 0.1;
+      }
     }
   }
 
