@@ -84,8 +84,6 @@ const convertStringToMatrix = (puzzleArray) => {
 const recurse = async (row, col) => {
   for (let i = row; i < NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; i++, col = 0) {
     if (br) {
-      br = false;
-
       break;
     }
     for (let j = col; j < NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; j++) {
@@ -93,14 +91,10 @@ const recurse = async (row, col) => {
         continue;
       }
       if (br) {
-        br = false;
-
         break;
       }
       for (let num = 1; num <= NUMBER_OF_ELEMENTS_PER_ROW_OR_COLUMN; num++) {
         if (br) {
-          br = false;
-
           break;
         }
         if (isValid(i, j, num)) {
