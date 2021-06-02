@@ -87,6 +87,7 @@ body {
 }
 
 .control-button {
+  background-color: white;
   font-weight: bold;
   border-radius: 0.25rem;
   font-family: 'Mate SC', serif;
