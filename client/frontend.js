@@ -14,12 +14,12 @@ const VOLUME_REDUCTION_STEP = 0.2;
 
 let br = false;
 let working = false;
-let grid = null;
-let currentPuzzle = null;
-let originalPuzzle = null;
 let createNewPuzzle = false;
 let endingRecursion = false;
 let stoppingRecursion = false;
+let grid = null;
+let currentPuzzle = null;
+let originalPuzzle = null;
 
 const mobileCheck = () => {
   let check = false;
@@ -219,7 +219,6 @@ const stopCallback = async () => {
 const cleanup = async () => {
   const audio = document.querySelector("audio");
 
-
   const fadeOut = async () => {
     if (audio.volume <= 0) {
       return;
@@ -245,7 +244,9 @@ const newPuzzleButtonCallback = async () => {
     createNewPuzzle = true;
     br = true;
   } else {
-    await createAndAssignNewPuzzle()
+    working = true;
+    await createAndAssignNewPuzzle();
+    working = false; 
   }
 }
 
