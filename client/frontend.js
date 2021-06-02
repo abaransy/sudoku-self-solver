@@ -110,6 +110,8 @@ const recurse = async (row, col) => {
 
           currentPuzzle[i][j] = '.';
           createAndAppendNumberElement(0, i, j);
+
+          await sleep(250);
         }
       }
 
