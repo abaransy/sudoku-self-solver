@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           return;
         }
 
-        const volumeReduction = Math.min(0.05, Math.abs(0 - audio.volume));
+        const volumeReduction = Math.min(0.1, Math.abs(0 - audio.volume));
 
         audio.volume -= volumeReduction;
         await sleep(250);
