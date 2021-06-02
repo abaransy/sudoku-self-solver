@@ -7,8 +7,10 @@ const SECOND_MIDDLE_ROW_OR_COLUMN_OFFSET_START = 2;
 const SECOND_MIDDLE_ROW_OR_COLUMN_OFFSET_END = 3;
 const THIRD_ROW_OR_COLUMN_OFFSET_START = 3;
 const THIRD_ROW_OR_COLUMN_OFFSET_END = 4;
-const SLEEP_TIME = 250;
+const SLEEP_TIME_GRID = 250;
+const SLEEP_TIME_VOLUME = 150;
 const AUDIO_DELAY = 0.5;
+const VOLUME_REDUCTION_STEP = 0.2; 
 
 let br = false;
 let working = false;
@@ -110,7 +112,7 @@ const recurse = async (row, col, stackDepth = 0) => {
           if (!br) {
             createAndAppendNumberElement(num, i, j);
 
-            await sleep(SLEEP_TIME);
+            await sleep(SLEEP_TIME_GRID);
           }
 
           if (await recurse(i, j + 1, stackDepth + 1)) {
@@ -124,7 +126,7 @@ const recurse = async (row, col, stackDepth = 0) => {
             if (!br) {
               createAndAppendNumberElement(0, i, j);
 
-              await sleep(SLEEP_TIME);
+              await sleep(SLEEP_TIME_GRID);
             }
           }
         }
@@ -209,11 +211,11 @@ const stopCallback = async () => {
         return;
       }
 
-      const volumeReduction = Math.min(0.1, Math.abs(0 - audio.volume));
+      const volumeReduction = Math.min(VOLUME_REDUCTION_STEP, Math.abs(0 - audio.volume));
 
       audio.volume -= volumeReduction;
 
-      await sleep(SLEEP_TIME);
+      await sleep(SLEEP_TIME_VOLUME);
       await fadeOut();
     }
 
