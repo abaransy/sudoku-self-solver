@@ -235,6 +235,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       audio.play();
       await recurse(0, 0);
       recursing = false;
+      audio.pause();
     }
   }
 
@@ -247,17 +248,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   startButton.addEventListener("click", startCallback);
   stopButton.addEventListener('click', stopCallback);
 
-  let fetchingPuzzle = false;
-
   newPuzzleButton.addEventListener('click', async () => {
-    if (fetchingPuzzle === false) {
-      stopCallback();
-
-      fetchingPuzzle = true;
-      originalPuzzle = await newPuzzle();
-      currentPuzzle = deepCopy(originalPuzzle);
-      fetchingPuzzle = false;
-    }
+    stopCallback();
+    originalPuzzle = await newPuzzle();
+    currentPuzzle = deepCopy(originalPuzzle);
   });
 
   window.onresize = windowResizeCallback
