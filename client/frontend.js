@@ -246,7 +246,7 @@ const newPuzzleButtonCallback = async () => {
   } else {
     working = true;
     await createAndAssignNewPuzzle();
-    working = false; 
+    working = false;
   }
 }
 
