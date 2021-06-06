@@ -296,10 +296,13 @@ const newPuzzle = async () => {
 }
 
 const createAndAssignNewPuzzle = async () => {
-  originalPuzzle = await newPuzzle();
-  currentPuzzle = deepCopy(originalPuzzle);
+    originalPuzzle = await newPuzzle();
+    
+    if (originalPuzzle) {
+      currentPuzzle = deepCopy(originalPuzzle);
 
-  populateGrid(originalPuzzle);
+      populateGrid(originalPuzzle);
+    }
 }
 
 const deepCopy = (arr) => {
