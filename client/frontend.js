@@ -283,6 +283,8 @@ const newPuzzle = async () => {
     puzzleObj = await fetch('/puzzle');
   } catch (err) {
     console.log(err);
+
+    return;
   }
 
   const puzzleMessage = await puzzleObj.json();
