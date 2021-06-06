@@ -277,12 +277,20 @@ const newPuzzleButtonCallback = async () => {
 }
 
 const newPuzzle = async () => {
-  const puzzleObj = await fetch('/puzzle');
+  let puzzleObj;
+
+  try {
+    puzzleObj = await fetch('/puzzle');
+  } catch (err) {
+    console.log(err);
+  }
+
   const puzzleMessage = await puzzleObj.json();
   const puzzleArray = puzzleMessage.message;
   const puzzleMatrix = convertStringToMatrix(puzzleArray);
 
   return puzzleMatrix;
+
 }
 
 const createAndAssignNewPuzzle = async () => {
