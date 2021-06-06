@@ -6,6 +6,7 @@ body {
   font-family: 'Mate SC', serif;
 }
 
+
 .container {
   display: flex;
   flex-direction: column;
@@ -14,6 +15,10 @@ body {
   justify-content: space-around;
   height: 100vh;
   width: 100%;
+}
+
+.container.loading {
+  opacity: 0.5;
 }
 
 #sodoku-board {
@@ -98,6 +103,20 @@ body {
 
 audio {
   display: none;
+}
+
+.modal {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+  position: absolute;
+  display: none;
+}
+
+.modal.show {
+  display: flex;
 }
 
 @media(max-width: 1000px) {

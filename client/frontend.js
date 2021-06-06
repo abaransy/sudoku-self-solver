@@ -190,11 +190,31 @@ const windowResizeCallback = () => {
   grid.style.height = `${gridWidthAndHeight}px`;
 
   const numberDivs = Array.from(document.querySelectorAll(".number"));
-  const numberElementWidth = document.querySelector('.number-element').clientWidth;
+  const numberElementWidth = document.querySelector(".number-element").clientWidth;
 
   numberDivs.forEach(numberDiv => {
     numberDiv.style.fontSize = `${NUMBER_DIV_TO_NUMBER_ELEMENT_RATIO * numberElementWidth}px`
   });
+}
+
+const showSpinner = () => {
+  const container = document.querySelector(".container");
+  const spinner = document.querySelector(".loader");
+  const modal = document.querySelector(".modal");
+
+  container.classList.add("loading");
+  spinner.classList.add("show");
+  modal.classList.add("show");
+}
+
+const hideSpinner = () => {
+  const container = document.querySelector(".container");
+  const spinner = document.querySelector(".loader");
+  const modal = document.querySelector(".modal");
+
+  container.classList.remove("loading");
+  spinner.classList.remove("show");
+  modal.classList.remove("show");
 }
 
 const startCallback = async () => {
@@ -213,7 +233,10 @@ const startCallback = async () => {
 }
 
 const stopCallback = async () => {
-  br = true;
+  if (working === true) {
+    showSpinner();
+    br = true;
+  }
 }
 
 const cleanup = async () => {
@@ -240,6 +263,8 @@ const cleanup = async () => {
 }
 
 const newPuzzleButtonCallback = async () => {
+  showSpinner();
+
   if (working === true) {
     createNewPuzzle = true;
     br = true;
@@ -247,6 +272,7 @@ const newPuzzleButtonCallback = async () => {
     working = true;
     await createAndAssignNewPuzzle();
     working = false;
+    hideSpinner();
   }
 }
 
@@ -294,6 +320,7 @@ const endOfRecursionCallback = async () => {
 
     endingRecursion = false;
     working = false;
+    hideSpinner();
   }
 }
 
